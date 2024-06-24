@@ -15,6 +15,7 @@
             background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
             color: white;
+            overflow: hidden; /* Prevent scrolling */
         }
 
         .countdown-container {
@@ -40,9 +41,19 @@
             display: block;
             font-size: 2rem;
         }
+
+        #fireworks-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fireworks.js/dist/fireworks.min.css">
 </head>
 <body>
+    <canvas id="fireworks-canvas"></canvas>
     <div class="countdown-container">
         <h1>Countdown to February 2, 2025</h1>
         <div id="countdown">
@@ -52,6 +63,7 @@
             <div><span id="seconds"></span>Seconds</div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/fireworks.js/dist/fireworks.min.js"></script>
     <script>
         function updateCountdown() {
             const countdownDate = new Date('February 2, 2025 00:00:00').getTime();
@@ -71,10 +83,23 @@
             if (distance < 0) {
                 clearInterval(countdownInterval);
                 document.getElementById('countdown').innerHTML = "It's here!";
+                startFireworks();
             }
         }
 
         const countdownInterval = setInterval(updateCountdown, 1000);
+
+        function startFireworks() {
+            const fireworks = new Fireworks({
+                target: document.getElementById('fireworks-canvas'),
+                hue: 120,
+                particleCount: 120,
+                delay: 300,
+                speed: 4,
+                maxPowder: 2
+            });
+            fireworks.start();
+        }
     </script>
 </body>
 </html>
